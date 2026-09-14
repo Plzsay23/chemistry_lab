@@ -114,10 +114,13 @@ def main():
     pub = node.create_publisher(JointState, "/isaac_joint_command", 10)
 
     t_real = time.time()
-    while None in state.values() and time.time() - t_real < 15.0:
+    def missing():
+        return [k for k, v in state.items() if v is None]  # `None in` would compare numpy arrays
+
+    while missing() and time.time() - t_real < 15.0:
         rclpy.spin_once(node, timeout_sec=0.1)
-    if None in state.values():
-        print(f"[grasp] 입력이 없습니다: {[k for k, v in state.items() if v is None]}. 씬 Play·ROS_DOMAIN_ID=42 확인.")
+    if missing():
+        print(f"[grasp] 입력이 없습니다: {missing()}. 씬 Play·ROS_DOMAIN_ID=42 확인.")
         return 1
 
     def measured(side):

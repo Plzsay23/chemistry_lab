@@ -38,6 +38,12 @@ BEAKER_MASS = 0.05              # kg, small glass beaker
 
 FEEDBACK_GRAPH = "/FeedbackGraph"
 
+# start view, captured from the user's viewport in the Isaac GUI (2026-09-14)
+CAMERA_POS = (-9.6533, 1.0845, 0.6561)
+CAMERA_TARGET = (-4.856, 4.7249, -3.8533)
+CAMERA_FOCAL = 18.14756202697754
+CAMERA_PRIM = "/Cameras/LabView"
+
 
 def build_robot_copy():
     """mecanum_room3.usd -> mecanum_dualarm.usd with arm joints renamed L_*/R_*."""
@@ -102,7 +108,17 @@ st.SetEditTarget(layer)
 UsdGeom.SetStageUpAxis(st, UsdGeom.Tokens.z)
 UsdGeom.SetStageMetersPerUnit(st, 1.0)
 st.SetDefaultPrim(st.GetPrimAtPath("/World"))
-layer.customLayerData = {"comment": "built by build_chem_lab_scene.py"}
+layer.customLayerData = {
+    "comment": "built by build_chem_lab_scene.py",
+    # Kit reads this when the stage opens: the perspective viewport starts at this view
+    "cameraSettings": {
+        "boundCamera": "/OmniverseKit_Persp",
+        "Perspective": {"position": Gf.Vec3d(*CAMERA_POS), "target": Gf.Vec3d(*CAMERA_TARGET)},
+        "Front": {"position": Gf.Vec3d(5, 0, 0), "radius": 5.0},
+        "Right": {"position": Gf.Vec3d(0, -5, 0), "radius": 5.0},
+        "Top": {"position": Gf.Vec3d(0, 0, 5), "radius": 5.0},
+    },
+}
 
 for p in ("/Environment/has_env", "/Environment/Fire", "/Environment/Smoke"):
     st.OverridePrim(p).SetActive(False)          # Hospital + fire/smoke placed for the hospital
@@ -167,7 +183,20 @@ grip_api.CreateDynamicFrictionAttr(0.9)
 grip_api.CreateRestitutionAttr(0.0)
 binding.Bind(grip, UsdShade.Tokens.weakerThanDescendants, "physics")
 
-# 7) ROS feedback for autonomous control: /clock, /joint_states, world TF of base_link and Beaker.
+# 7) saved camera with the same start view (select it in the viewport camera menu to jump back)
+eye, tgt = Gf.Vec3d(*CAMERA_POS), Gf.Vec3d(*CAMERA_TARGET)
+f = (tgt - eye).GetNormalized()
+r = Gf.Cross(f, Gf.Vec3d(0, 0, 1)).GetNormalized()
+u = Gf.Cross(r, f)
+view = Gf.Matrix4d(r[0], r[1], r[2], 0, u[0], u[1], u[2], 0, -f[0], -f[1], -f[2], 0, eye[0], eye[1], eye[2], 1)
+cam = UsdGeom.Camera.Define(st, CAMERA_PRIM)
+cam.AddTransformOp().Set(view)
+cam.CreateFocalLengthAttr(CAMERA_FOCAL)
+cam.CreateClippingRangeAttr(Gf.Vec2f(0.01, 1000.0))
+cam.GetPrim().CreateAttribute("omni:kit:centerOfInterest", Sdf.ValueTypeNames.Vector3d, custom=True).Set(
+    Gf.Vec3d(0, 0, -(tgt - eye).GetLength()))
+
+# 8) ROS feedback for autonomous control: /clock, /joint_states, world TF of base_link and Beaker.
 #    Node types/versions copied from a graph built with og.Controller in Isaac Sim 6.0.1 GUI (2026-09-14).
 T = Sdf.ValueTypeNames
 node_api = Sdf.Layer.FindOrOpen(ROBOT).GetPrimAtPath("/so101_new_calib_0/ActionGraph/on_playback_tick").GetInfo("apiSchemas")

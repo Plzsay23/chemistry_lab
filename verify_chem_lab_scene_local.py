@@ -111,6 +111,21 @@ bhits = [p for p, r in lab_colliders
          if all(r.GetMin()[k] < br.GetMax()[k] and r.GetMax()[k] > br.GetMin()[k] + (0.002 if k == 2 else 0) for k in range(3))]
 check(not bhits, f"beaker overlaps no lab collider {bhits[:3]}")
 
+# start view: layer camera settings + saved camera looking at the same target
+cs = st.GetRootLayer().customLayerData.get("cameraSettings", {})
+persp = cs.get("Perspective", {})
+check(cs.get("boundCamera") == "/OmniverseKit_Persp" and "position" in persp and "target" in persp,
+      f"layer cameraSettings Perspective {persp}")
+camp = st.GetPrimAtPath("/Cameras/LabView")
+if camp and camp.IsA(UsdGeom.Camera) and persp:
+    Mc = UsdGeom.XformCache().GetLocalToWorldTransform(camp)
+    look = Mc.TransformDir(Gf.Vec3d(0, 0, -1)).GetNormalized()
+    want = (Gf.Vec3d(persp["target"]) - Gf.Vec3d(persp["position"])).GetNormalized()
+    check((Mc.ExtractTranslation() - Gf.Vec3d(persp["position"])).GetLength() < 1e-6 and Gf.Dot(look, want) > 0.9999
+          and abs(UsdGeom.Camera(camp).GetFocalLengthAttr().Get() - 18.1476) < 1e-3, "LabView camera matches start view")
+else:
+    check(False, "LabView camera prim")
+
 # ROS feedback graph: node types/versions, connections and prim targets resolve
 EXPECTED = {"tick": ("omni.graph.action.OnPlaybackTick", 2), "context": ("isaacsim.ros2.bridge.ROS2Context", 2),
             "sim_time": ("isaacsim.core.nodes.IsaacReadSimulationTime", 1),

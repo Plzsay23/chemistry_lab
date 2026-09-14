@@ -1,6 +1,25 @@
 #usda 1.0
 (
     customLayerData = {
+        dictionary cameraSettings = {
+            dictionary Front = {
+                double3 position = (5, 0, 0)
+                double radius = 5
+            }
+            dictionary Perspective = {
+                double3 position = (-9.6533, 1.0845, 0.6561)
+                double3 target = (-4.856, 4.7249, -3.8533)
+            }
+            dictionary Right = {
+                double3 position = (0, -5, 0)
+                double radius = 5
+            }
+            dictionary Top = {
+                double3 position = (0, 0, 5)
+                double radius = 5
+            }
+            string boundCamera = "/OmniverseKit_Persp"
+        }
         string comment = "built by build_chem_lab_scene.py"
     }
     defaultPrim = "World"
@@ -1110,6 +1129,18 @@ def "PhysicsMaterials"
         float physics:dynamicFriction = 0.9
         float physics:restitution = 0
         float physics:staticFriction = 1
+    }
+}
+
+def "Cameras"
+{
+    def Camera "LabView"
+    {
+        float2 clippingRange = (0.01, 1000)
+        float focalLength = 18.147562
+        custom vector3d omni:kit:centerOfInterest = (0, 0, -7.523382737173485)
+        matrix4d xformOp:transform = ( (0.604499140687366, -0.7966057926655041, 0, 0), (0.47747327059362255, 0.36232749552227783, 0.8004611557453509, 0), (-0.6376519934704707, -0.48387808080168043, 0.5993846328884458, 0), (-9.6533, 1.0845, 0.6561, 1) )
+        uniform token[] xformOpOrder = ["xformOp:transform"]
     }
 }
 

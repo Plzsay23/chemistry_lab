@@ -106,7 +106,7 @@ print(f"  beaker centre {tuple(round(v, 3) for v in bcen)} size {tuple(round(v, 
       f"axis·fwd {Gf.Dot(axis, fwd):.3f} ahead {ahead:.3f} m side {side:+.3f} m bottom-floor {(br.GetMin()[2] - floor_z) * 1000:.1f} mm")
 check(abs(Gf.Dot(axis, fwd)) > 0.99 and abs(axis[2]) < 0.01, "beaker lying, axis along robot forward")
 check(0 < br.GetMin()[2] - floor_z < 0.005, "beaker resting on floor (gap < 5 mm)")
-check(abs(ahead - 1.0) < 0.01 and abs(side) < 0.01, "beaker 1.0 m straight ahead of base_link")
+check(abs(ahead - 0.33) < 0.01 and abs(side) < 0.01, "beaker 0.33 m straight ahead of base_link (grasp reach)")
 bhits = [p for p, r in lab_colliders
          if all(r.GetMin()[k] < br.GetMax()[k] and r.GetMax()[k] > br.GetMin()[k] + (0.002 if k == 2 else 0) for k in range(3))]
 check(not bhits, f"beaker overlaps no lab collider {bhits[:3]}")

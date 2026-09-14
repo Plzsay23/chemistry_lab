@@ -32,7 +32,7 @@ ARM_PREFIX = {"/so101_new_calib": "L_", "/so101_new_calib_0": "R_"}  # +Y / -Y s
 BEAKER_SRC = "/root/Lab/ST_Acc_BechersGlass03_mo"   # 6.8 cm dia x 7.55 cm, pivot at bottom centre, axis +Z
 BEAKER_MESH = "ST_Acc_BechersGlass03_md"
 BEAKER_GLASS = "/ChemLab/materials/ST_Acc_ScienceGlass01"
-BEAKER_AHEAD = 1.0              # m ahead of base_link along its +X
+BEAKER_AHEAD = 0.33             # m ahead of base_link along its +X (grasp test: arms reach without driving)
 BEAKER_R, BEAKER_H = 0.0341, 0.0755
 BEAKER_MASS = 0.05              # kg, small glass beaker
 

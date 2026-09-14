@@ -1106,7 +1106,7 @@ def Xform "Beaker" (
 {
     float physics:mass = 0.05
     float3 xformOp:rotateXYZ = (-90, 0, 8.78)
-    double3 xformOp:translate = (-6.3623786773405735, 4.10377408831297, -2.7464)
+    double3 xformOp:translate = (-6.260109294313102, 3.4416253336549394, -2.7464)
 
     over "ST_Acc_BechersGlass03_md" (
         prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]

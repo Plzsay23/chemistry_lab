@@ -54,22 +54,27 @@ def waypoints(beaker, args):
             "pregrasp": np.array([bx, open_y, z0 + args.above]),
             "descend": np.array([bx, open_y, z0]),
             "squeeze": np.array([bx, grip_y, z0]),
-            "lift": np.array([bx, grip_y, z0 + args.lift]),
+            # lift is split into straight-up sub-steps so the squeeze is held all the way
+            "lift": [np.array([bx, grip_y, z0 + args.lift * (k + 1) / args.lift_steps]) for k in range(args.lift_steps)],
         }
     return wp
 
 
 def solve_plan(wp, start, stages):
+    """plan[side][stage] = list of (theta, err), one per sub-step (1 except lift)."""
     plan, ok = {}, True
     for side in SIDES:
         seed = start[side]
         plan[side] = {}
         for i, stage in enumerate(stages):
-            th, err = kin.ik_best(side, wp[side][stage], seeds=[seed] + kin.SEEDS if i else None)
-            plan[side][stage] = (th, err)
-            seed = th
-            if err > 0.01:
-                ok = False
+            targets = wp[side][stage] if isinstance(wp[side][stage], list) else [wp[side][stage]]
+            plan[side][stage] = []
+            for tgt in targets:
+                th, err = kin.ik_best(side, tgt, seeds=[seed] + kin.SEEDS)
+                plan[side][stage].append((th, err))
+                seed = th
+                if err > 0.01:
+                    ok = False
     return plan, ok
 
 
@@ -83,6 +88,7 @@ def main():
     ap.add_argument("--above", type=float, default=0.08, help="준비 자세 높이 (비커 중심 위) m")
     ap.add_argument("--squeeze", type=float, default=0.006, help="조일 때 옆면보다 안쪽 목표 m")
     ap.add_argument("--lift", type=float, default=0.10, help="들어올릴 높이 m")
+    ap.add_argument("--lift-steps", type=int, default=5, help="들어올리기를 나눌 수직 구간 수")
     ap.add_argument("--z-offset", type=float, default=0.01, help="집게 목표 높이 = 비커 중심 + 이 값 m")
     ap.add_argument("--real-timeout", type=float, default=900.0)
     args = ap.parse_args()
@@ -163,11 +169,13 @@ def main():
     wp = waypoints(beaker, args)
     plan, ok = solve_plan(wp, {s: measured(s) for s in SIDES}, stages)
     for stage in stages:
-        row = []
-        for side in SIDES:
-            th, err = plan[side][stage]
-            row.append(f"{side} tool {np.round(wp[side][stage], 3)} err {err * 100:.2f}cm θ° {np.round(np.degrees(th), 0)}")
-        print(f"[grasp] {stage:9s} " + " | ".join(row))
+        for k in range(len(plan["L"][stage])):
+            row = []
+            for side in SIDES:
+                th, err = plan[side][stage][k]
+                tgt = wp[side][stage][k] if isinstance(wp[side][stage], list) else wp[side][stage]
+                row.append(f"{side} tool {np.round(tgt, 3)} err {err * 100:.2f}cm θ° {np.round(np.degrees(th), 0)}")
+            print(f"[grasp] {stage:9s} " + " | ".join(row))
     if not ok:
         print("[grasp] IK 오차가 1 cm 를 넘는 단계가 있어 움직이지 않습니다. 비커 거리(approach --target)를 조정하세요.")
         return 1
@@ -177,7 +185,10 @@ def main():
 
     z_start = state["beaker"][2]
     for stage in stages:
-        move(plan["L"][stage][0], plan["R"][stage][0], stage)
+        n = len(plan["L"][stage])
+        for k in range(n):
+            label = stage if n == 1 else f"{stage}{k + 1}/{n}"
+            move(plan["L"][stage][k][0], plan["R"][stage][k][0], label)
     if "lift" in stages:
         rise = state["beaker"][2] - z_start
         print(f"[grasp] 비커 높이 변화 {rise * 100:+.1f} cm → {'성공' if rise > 0.5 * args.lift else '못 들었음'}")

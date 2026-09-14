@@ -74,6 +74,11 @@ def ik(side, target, seed=None, iters=300, tol=1e-4, damping=0.02):
 
 
 def ik_best(side, target, seeds=None):
-    """Try several seeds, return the lowest-error solution (theta, err)."""
-    tries = [ik(side, target, s) for s in (seeds if seeds is not None else SEEDS)]
+    """Try several seeds. Among solutions within 1 mm, return the one closest to the first seed
+    (keeps the arm on the same elbow branch between stages); otherwise the lowest-error one."""
+    seeds = list(seeds if seeds is not None else SEEDS)
+    tries = [ik(side, target, s) for s in seeds]
+    good = [r for r in tries if r[1] < 1e-3]
+    if good:
+        return min(good, key=lambda r: float(np.abs(r[0] - np.asarray(seeds[0], float)).max()))
     return min(tries, key=lambda r: r[1])

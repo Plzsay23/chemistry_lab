@@ -87,7 +87,13 @@ bk = st.GetPrimAtPath("/Beaker")
 bmesh = st.GetPrimAtPath("/Beaker/ST_Acc_BechersGlass03_md")
 check(bk.HasAPI(UsdPhysics.RigidBodyAPI) and abs(UsdPhysics.MassAPI(bk).GetMassAttr().Get() - 0.05) < 1e-6, "beaker rigid body, 0.05 kg")
 check(bmesh.HasAPI(UsdPhysics.CollisionAPI)
-      and UsdPhysics.MeshCollisionAPI(bmesh).GetApproximationAttr().Get() == "convexHull", "beaker convexHull collider")
+      and UsdPhysics.MeshCollisionAPI(bmesh).GetApproximationAttr().Get() == "sdf"
+      # usd-core has no PhysxSchema registered, so GetAppliedSchemas() drops the name: read the metadata
+      and "PhysxSDFMeshCollisionAPI" in bmesh.GetMetadata("apiSchemas").GetAddedOrExplicitItems()
+      and (bmesh.GetAttribute("physxSDFMeshCollision:sdfResolution").Get() or 0) >= 200, "beaker SDF collider (mouth open)")
+for jp in ("/so101_new_calib/joints/L_Jaw", "/so101_new_calib_0/joints/R_Jaw"):
+    lo = UsdPhysics.RevoluteJoint(st.GetPrimAtPath(jp)).GetLowerLimitAttr().Get()
+    check(lo is not None and lo <= -30.0, f"{jp} lower limit {lo} deg allows a full close")
 vis, _ = UsdShade.MaterialBindingAPI(bmesh).ComputeBoundMaterial()
 phys, _ = UsdShade.MaterialBindingAPI(bmesh).ComputeBoundMaterial(materialPurpose="physics")
 check(vis and vis.GetPrim().IsValid() and "ScienceGlass" in vis.GetPath().name, f"beaker glass material {vis.GetPath() if vis else None}")
@@ -104,9 +110,9 @@ ahead = Gf.Dot(bcen - bl.ExtractTranslation(), fwd)
 side = Gf.Dot(bcen - bl.ExtractTranslation(), bl.TransformDir(Gf.Vec3d(0, 1, 0)).GetNormalized())
 print(f"  beaker centre {tuple(round(v, 3) for v in bcen)} size {tuple(round(v, 3) for v in br.GetSize())} "
       f"axis·fwd {Gf.Dot(axis, fwd):.3f} ahead {ahead:.3f} m side {side:+.3f} m bottom-floor {(br.GetMin()[2] - floor_z) * 1000:.1f} mm")
-check(abs(Gf.Dot(axis, fwd)) > 0.99 and abs(axis[2]) < 0.01, "beaker lying, axis along robot forward")
+check(Gf.Dot(axis, fwd) < -0.99 and abs(axis[2]) < 0.01, "beaker lying along robot forward, mouth toward robot")
 check(0 < br.GetMin()[2] - floor_z < 0.005, "beaker resting on floor (gap < 5 mm)")
-check(abs(ahead - 0.33) < 0.01 and abs(side) < 0.01, "beaker 0.33 m straight ahead of base_link (grasp reach)")
+check(abs(ahead - 0.40) < 0.01 and abs(side) < 0.01, "beaker centre 0.40 m straight ahead of base_link (rim grasp reach)")
 bhits = [p for p, r in lab_colliders
          if all(r.GetMin()[k] < br.GetMax()[k] and r.GetMax()[k] > br.GetMin()[k] + (0.002 if k == 2 else 0) for k in range(3))]
 check(not bhits, f"beaker overlaps no lab collider {bhits[:3]}")

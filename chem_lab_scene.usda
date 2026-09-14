@@ -1105,18 +1105,41 @@ def Xform "Beaker" (
 )
 {
     float physics:mass = 0.05
-    float3 xformOp:rotateXYZ = (-90, 0, 8.78)
-    double3 xformOp:translate = (-6.260109294313102, 3.4416253336549394, -2.7464)
+    float3 xformOp:rotateXYZ = (-90, 0, 188.78)
+    double3 xformOp:translate = (-6.282318540925783, 3.5854203244053027, -2.7464)
 
     over "ST_Acc_BechersGlass03_md" (
-        prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+        prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "PhysxSDFMeshCollisionAPI", "MaterialBindingAPI"]
     )
     {
         rel material:binding = </ChemLab/materials/ST_Acc_ScienceGlass01>
         rel material:binding:physics = </PhysicsMaterials/BeakerGrip> (
             bindMaterialAs = "weakerThanDescendants"
         )
-        uniform token physics:approximation = "convexHull"
+        uniform token physics:approximation = "sdf"
+        int physxSDFMeshCollision:sdfResolution = 300
+    }
+}
+
+over "so101_new_calib"
+{
+    over "joints"
+    {
+        over "L_Jaw"
+        {
+            float physics:lowerLimit = -40
+        }
+    }
+}
+
+over "so101_new_calib_0"
+{
+    over "joints"
+    {
+        over "R_Jaw"
+        {
+            float physics:lowerLimit = -40
+        }
     }
 }
 

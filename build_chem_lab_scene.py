@@ -32,9 +32,12 @@ ARM_PREFIX = {"/so101_new_calib": "L_", "/so101_new_calib_0": "R_"}  # +Y / -Y s
 BEAKER_SRC = "/root/Lab/ST_Acc_BechersGlass03_mo"   # 6.8 cm dia x 7.55 cm, pivot at bottom centre, axis +Z
 BEAKER_MESH = "ST_Acc_BechersGlass03_md"
 BEAKER_GLASS = "/ChemLab/materials/ST_Acc_ScienceGlass01"
-BEAKER_AHEAD = 0.33             # m ahead of base_link along its +X (grasp test: arms reach without driving)
+BEAKER_AHEAD = 0.40             # m, beaker centre ahead of base_link along its +X (rim grasp without driving;
+                                #    offline scan: tilt 35 deg, rim angle 65 deg -> arms 11 mm apart, 33 mm above floor)
 BEAKER_R, BEAKER_H = 0.0341, 0.0755
 BEAKER_MASS = 0.05              # kg, small glass beaker
+BEAKER_SDF_RES = 300            # SDF collider keeps the mouth open (convexHull closed it); wall is 1.3 mm
+JAW_LOWER_DEG = -40.0           # USD limit -10 leaves a 4 mm gap at the finger tips; thin glass needs a full close
 
 FEEDBACK_GRAPH = "/FeedbackGraph"
 
@@ -159,21 +162,28 @@ for w in WHEELS:
     s.CreatePurposeAttr(UsdGeom.Tokens.guide)
     UsdPhysics.CollisionAPI.Apply(s.GetPrim())
 
-# 6) beaker lying on the floor ahead of the robot, axis along the robot's forward direction
+# 6) beaker lying on the floor ahead of the robot, axis along the robot's forward direction,
+#    mouth facing the robot so the grippers can pinch the rim wall (one finger inside, jaw outside)
 yaw = math.radians(ROBOT_YAW_DEG)
 fwd = Gf.Vec3d(math.cos(yaw), math.sin(yaw), 0.0)
 centre = Gf.Vec3d(ROBOT_XY[0], ROBOT_XY[1], floor_z + BEAKER_R + 0.001) + fwd * BEAKER_AHEAD
-pivot = centre - fwd * (BEAKER_H / 2)            # source pivot is the bottom centre
+pivot = centre + fwd * (BEAKER_H / 2)            # source pivot is the bottom centre (far end)
 beaker = st.DefinePrim("/Beaker", "Xform")
 beaker.GetReferences().AddReference("./chem_lab/lab.usd", BEAKER_SRC)
 beaker.GetAttribute("xformOp:translate").Set(pivot)
-beaker.GetAttribute("xformOp:rotateXYZ").Set(Gf.Vec3f(-90.0, 0.0, ROBOT_YAW_DEG - 90.0))  # local +Z -> fwd
+beaker.GetAttribute("xformOp:rotateXYZ").Set(Gf.Vec3f(-90.0, 0.0, ROBOT_YAW_DEG + 90.0))  # local +Z (to mouth) -> -fwd
 UsdPhysics.RigidBodyAPI.Apply(beaker)
 UsdPhysics.MassAPI.Apply(beaker).CreateMassAttr(BEAKER_MASS)
 
 mesh = st.GetPrimAtPath(f"/Beaker/{BEAKER_MESH}")
 UsdPhysics.CollisionAPI.Apply(mesh)
-UsdPhysics.MeshCollisionAPI.Apply(mesh).CreateApproximationAttr(UsdPhysics.Tokens.convexHull)
+UsdPhysics.MeshCollisionAPI.Apply(mesh).CreateApproximationAttr("sdf")   # watertight mesh (every edge used twice)
+mesh.AddAppliedSchema("PhysxSDFMeshCollisionAPI")
+mesh.CreateAttribute("physxSDFMeshCollision:sdfResolution", Sdf.ValueTypeNames.Int, custom=False).Set(BEAKER_SDF_RES)
+
+for arm, prefix in ARM_PREFIX.items():
+    st.OverridePrim(f"{arm}/joints/{prefix}Jaw").CreateAttribute(
+        "physics:lowerLimit", Sdf.ValueTypeNames.Float, custom=False).Set(JAW_LOWER_DEG)
 binding = UsdShade.MaterialBindingAPI.Apply(mesh)
 binding.Bind(UsdShade.Material(st.GetPrimAtPath(BEAKER_GLASS)))   # source binding points outside the reference
 grip = UsdShade.Material.Define(st, "/PhysicsMaterials/BeakerGrip")
@@ -243,4 +253,4 @@ print(f"wrote {ROBOT} ({n_joints} arm joints renamed)")
 print(f"wrote {SCENE}")
 print(f"  lab offset {tuple(round(v, 4) for v in off)}  floor z {floor_z:.4f}")
 print(f"  colliders added to {n_new} lab meshes (+ floor box {x1 - x0 + 2:.1f} x {y1 - y0 + 2:.1f} m)")
-print(f"  beaker centre {tuple(round(v, 4) for v in centre)} ({BEAKER_AHEAD} m ahead, lying along robot +X)")
+print(f"  beaker centre {tuple(round(v, 4) for v in centre)} ({BEAKER_AHEAD} m ahead, lying, mouth toward robot)")

@@ -36,6 +36,8 @@ BEAKER_AHEAD = 1.0              # m ahead of base_link along its +X
 BEAKER_R, BEAKER_H = 0.0341, 0.0755
 BEAKER_MASS = 0.05              # kg, small glass beaker
 
+FEEDBACK_GRAPH = "/FeedbackGraph"
+
 
 def build_robot_copy():
     """mecanum_room3.usd -> mecanum_dualarm.usd with arm joints renamed L_*/R_*."""
@@ -164,6 +166,48 @@ grip_api.CreateStaticFrictionAttr(1.0)
 grip_api.CreateDynamicFrictionAttr(0.9)
 grip_api.CreateRestitutionAttr(0.0)
 binding.Bind(grip, UsdShade.Tokens.weakerThanDescendants, "physics")
+
+# 7) ROS feedback for autonomous control: /clock, /joint_states, world TF of base_link and Beaker.
+#    Node types/versions copied from a graph built with og.Controller in Isaac Sim 6.0.1 GUI (2026-09-14).
+T = Sdf.ValueTypeNames
+node_api = Sdf.Layer.FindOrOpen(ROBOT).GetPrimAtPath("/so101_new_calib_0/ActionGraph/on_playback_tick").GetInfo("apiSchemas")
+graph = st.DefinePrim(FEEDBACK_GRAPH, "OmniGraph")
+for name, typ, val in (("fileFormatVersion", T.Int2, Gf.Vec2i(1, 9)), ("evaluator:type", T.Token, "execution"),
+                       ("fabricCacheBacking", T.Token, "Shared"), ("pipelineStage", T.Token, "pipelineStageSimulation"),
+                       ("evaluationMode", T.Token, "Automatic")):
+    graph.CreateAttribute(name, typ, custom=False).Set(val)
+
+
+def og_node(name, node_type, version):
+    prim = st.DefinePrim(f"{FEEDBACK_GRAPH}/{name}", "OmniGraphNode")
+    if node_api:
+        layer.GetPrimAtPath(prim.GetPath()).SetInfo("apiSchemas", node_api)
+    prim.CreateAttribute("node:type", T.Token, custom=False).Set(node_type)
+    prim.CreateAttribute("node:typeVersion", T.Int, custom=False).Set(version)
+    return prim
+
+
+og_node("tick", "omni.graph.action.OnPlaybackTick", 2).CreateAttribute("outputs:tick", T.UInt, custom=True)
+og_node("context", "isaacsim.ros2.bridge.ROS2Context", 2).CreateAttribute("outputs:context", T.UInt64, custom=True)
+og_node("sim_time", "isaacsim.core.nodes.IsaacReadSimulationTime", 1).CreateAttribute(
+    "outputs:simulationTime", T.Double, custom=True)
+for name, node_type, topic in (("pub_clock", "isaacsim.ros2.bridge.ROS2PublishClock", "clock"),
+                               ("pub_joint_states", "isaacsim.ros2.bridge.ROS2PublishJointState", "joint_states"),
+                               ("pub_world_tf", "isaacsim.ros2.bridge.ROS2PublishTransformTree", None)):
+    pub = og_node(name, node_type, 1)
+    for inp, typ, src in (("execIn", T.UInt, "tick.outputs:tick"),
+                          ("context", T.UInt64, "context.outputs:context"),
+                          ("timeStamp", T.Double, "sim_time.outputs:simulationTime")):
+        pub.CreateAttribute(f"inputs:{inp}", typ, custom=True).AddConnection(Sdf.Path(f"{FEEDBACK_GRAPH}/{src}"))
+    if topic:
+        pub.CreateAttribute("inputs:topicName", T.String, custom=True).Set(topic)
+# JointState needs the ArticulationRootAPI prim (/moebius_mecanum_base alone publishes nothing)
+st.GetPrimAtPath(f"{FEEDBACK_GRAPH}/pub_joint_states").CreateRelationship("inputs:targetPrim", custom=True).SetTargets(
+    [Sdf.Path("/moebius_mecanum_base/base_footprint")])
+world_tf = st.GetPrimAtPath(f"{FEEDBACK_GRAPH}/pub_world_tf")
+world_tf.CreateRelationship("inputs:parentPrim", custom=True)          # empty = world frame
+world_tf.CreateRelationship("inputs:targetPrims", custom=True).SetTargets(
+    [Sdf.Path("/moebius_mecanum_base/base_link"), Sdf.Path("/Beaker")])
 
 layer.Save()
 print(f"wrote {ROBOT} ({n_joints} arm joints renamed)")

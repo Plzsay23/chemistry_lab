@@ -1113,3 +1113,89 @@ def "PhysicsMaterials"
     }
 }
 
+def OmniGraph "FeedbackGraph"
+{
+    token evaluationMode = "Automatic"
+    token evaluator:type = "execution"
+    token fabricCacheBacking = "Shared"
+    int2 fileFormatVersion = (1, 9)
+    token pipelineStage = "pipelineStageSimulation"
+
+    def OmniGraphNode "tick" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        token node:type = "omni.graph.action.OnPlaybackTick"
+        int node:typeVersion = 2
+        custom uint outputs:tick
+    }
+
+    def OmniGraphNode "context" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        token node:type = "isaacsim.ros2.bridge.ROS2Context"
+        int node:typeVersion = 2
+        custom uint64 outputs:context
+    }
+
+    def OmniGraphNode "sim_time" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        token node:type = "isaacsim.core.nodes.IsaacReadSimulationTime"
+        int node:typeVersion = 1
+        custom double outputs:simulationTime
+    }
+
+    def OmniGraphNode "pub_clock" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        custom uint64 inputs:context
+        prepend uint64 inputs:context.connect = </FeedbackGraph/context.outputs:context>
+        custom uint inputs:execIn
+        prepend uint inputs:execIn.connect = </FeedbackGraph/tick.outputs:tick>
+        custom double inputs:timeStamp
+        prepend double inputs:timeStamp.connect = </FeedbackGraph/sim_time.outputs:simulationTime>
+        custom string inputs:topicName = "clock"
+        token node:type = "isaacsim.ros2.bridge.ROS2PublishClock"
+        int node:typeVersion = 1
+    }
+
+    def OmniGraphNode "pub_joint_states" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        custom uint64 inputs:context
+        prepend uint64 inputs:context.connect = </FeedbackGraph/context.outputs:context>
+        custom uint inputs:execIn
+        prepend uint inputs:execIn.connect = </FeedbackGraph/tick.outputs:tick>
+        custom rel inputs:targetPrim = </moebius_mecanum_base/base_footprint>
+        custom double inputs:timeStamp
+        prepend double inputs:timeStamp.connect = </FeedbackGraph/sim_time.outputs:simulationTime>
+        custom string inputs:topicName = "joint_states"
+        token node:type = "isaacsim.ros2.bridge.ROS2PublishJointState"
+        int node:typeVersion = 1
+    }
+
+    def OmniGraphNode "pub_world_tf" (
+        prepend apiSchemas = ["NodeGraphNodeAPI"]
+    )
+    {
+        custom uint64 inputs:context
+        prepend uint64 inputs:context.connect = </FeedbackGraph/context.outputs:context>
+        custom uint inputs:execIn
+        prepend uint inputs:execIn.connect = </FeedbackGraph/tick.outputs:tick>
+        custom rel inputs:parentPrim
+        custom rel inputs:targetPrims = [
+            </moebius_mecanum_base/base_link>,
+            </Beaker>,
+        ]
+        custom double inputs:timeStamp
+        prepend double inputs:timeStamp.connect = </FeedbackGraph/sim_time.outputs:simulationTime>
+        token node:type = "isaacsim.ros2.bridge.ROS2PublishTransformTree"
+        int node:typeVersion = 1
+    }
+}
+

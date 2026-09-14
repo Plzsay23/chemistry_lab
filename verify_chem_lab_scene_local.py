@@ -111,6 +111,31 @@ bhits = [p for p, r in lab_colliders
          if all(r.GetMin()[k] < br.GetMax()[k] and r.GetMax()[k] > br.GetMin()[k] + (0.002 if k == 2 else 0) for k in range(3))]
 check(not bhits, f"beaker overlaps no lab collider {bhits[:3]}")
 
+# ROS feedback graph: node types/versions, connections and prim targets resolve
+EXPECTED = {"tick": ("omni.graph.action.OnPlaybackTick", 2), "context": ("isaacsim.ros2.bridge.ROS2Context", 2),
+            "sim_time": ("isaacsim.core.nodes.IsaacReadSimulationTime", 1),
+            "pub_clock": ("isaacsim.ros2.bridge.ROS2PublishClock", 1),
+            "pub_joint_states": ("isaacsim.ros2.bridge.ROS2PublishJointState", 1),
+            "pub_world_tf": ("isaacsim.ros2.bridge.ROS2PublishTransformTree", 1)}
+g = st.GetPrimAtPath("/FeedbackGraph")
+check(g and g.GetTypeName() == "OmniGraph", "FeedbackGraph prim")
+nodes = {c.GetName(): c for c in g.GetChildren()} if g else {}
+got = {n: (p.GetAttribute("node:type").Get(), p.GetAttribute("node:typeVersion").Get()) for n, p in nodes.items()}
+check(got == EXPECTED, f"feedback nodes {got}")
+bad_conn = [f"{a.GetPath()} <- {c}" for p in nodes.values() for a in p.GetAttributes()
+            for c in a.GetConnections() if not st.GetPropertyAtPath(c)]
+check(nodes and not bad_conn, f"feedback connections resolve {bad_conn[:3]}")
+if nodes:
+    js = nodes["pub_joint_states"].GetRelationship("inputs:targetPrim").GetTargets()
+    tf = nodes["pub_world_tf"].GetRelationship("inputs:targetPrims").GetTargets()
+    check(js == [Sdf.Path("/moebius_mecanum_base/base_footprint")]
+          and st.GetPrimAtPath(js[0]).HasAPI(UsdPhysics.ArticulationRootAPI), f"joint_states target {js}")
+    check(tf == [Sdf.Path("/moebius_mecanum_base/base_link"), Sdf.Path("/Beaker")]
+          and all(st.GetPrimAtPath(t) for t in tf)
+          and not nodes["pub_world_tf"].GetRelationship("inputs:parentPrim").GetTargets(), f"world TF targets {tf}")
+    topics = {n: nodes[n].GetAttribute("inputs:topicName").Get() for n in ("pub_clock", "pub_joint_states")}
+    check(topics == {"pub_clock": "clock", "pub_joint_states": "joint_states"}, f"topics {topics}")
+
 total, missing = 0, set()
 for p in Usd.PrimRange(st.GetPrimAtPath("/ChemLab")):
     for a in p.GetAttributes():

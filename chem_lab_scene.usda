@@ -1,0 +1,1115 @@
+#usda 1.0
+(
+    customLayerData = {
+        string comment = "built by build_chem_lab_scene.py"
+    }
+    defaultPrim = "World"
+    metersPerUnit = 1
+    subLayers = [
+        @./mecanum_dualarm.usd@
+    ]
+    upAxis = "Z"
+)
+
+over "Environment"
+{
+    over "has_env" (
+        active = false
+    )
+    {
+    }
+
+    over "Fire" (
+        active = false
+    )
+    {
+    }
+
+    over "Smoke" (
+        active = false
+    )
+    {
+    }
+}
+
+def Xform "ChemLab" (
+    prepend references = @./chem_lab/lab.usd@</root/Lab>
+)
+{
+    double3 xformOp:translate = (-6.5954999999999995, 0.8528000000000002, -2.7815)
+
+    over "ST_Acc_CoatRack01_mo"
+    {
+        over "ST_Acc_CoatRack01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Acc_Extinguisher01_mo"
+    {
+        over "ST_Acc_Extinguisher01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Acc_FireBanket01_mo"
+    {
+        over "ST_Acc_FireBanket01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Acc_PlasticBucket01_mo"
+    {
+        over "ST_Acc_PlasticBucket01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Acc_StandFan01_mo"
+    {
+        over "ST_Acc_StandFan01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Deco_Skeleton01_ST_Deco_Skeleton01_mo"
+    {
+        over "ST_Deco_Skeleton01_ST_Deco_Skeleton01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Doors_InteriorWood02B_mo"
+    {
+        over "ST_Doors_InteriorWood02B_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Doors_InteriorWood02B_mo_001"
+    {
+        over "ST_Doors_InteriorWood02B_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Fab_BackPack01_mo"
+    {
+        over "ST_Fab_BackPack01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Fab_BackPack01_mo_001"
+    {
+        over "ST_Fab_BackPack01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Chair03_mo"
+    {
+        over "ST_Furn_Chair03_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Chair03_mo_001"
+    {
+        over "ST_Furn_Chair03_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_CupboarDesk02_mo"
+    {
+        over "ST_Furn_CupboarDesk02_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_CupboarDesk02_mo_001"
+    {
+        over "ST_Furn_CupboarDesk02_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_CupboarDesk03_mo"
+    {
+        over "ST_Furn_CupboarDesk03_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_KitchenTrolley01_mo"
+    {
+        over "ST_Furn_KitchenTrolley01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_LargeCupboard01_mo_001"
+    {
+        over "ST_Furn_LargeCupboard01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_LargeCupboard01_mo_002"
+    {
+        over "ST_Furn_LargeCupboard01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_LargeCupboard01_mo_003"
+    {
+        over "ST_Furn_LargeCupboard01_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_LargeCupboard01_mo_004"
+    {
+        over "ST_Furn_LargeCupboard01_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Radiator01_mo"
+    {
+        over "ST_Furn_Radiator01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+
+        over "ST_Pipe_Radiator01B_mo"
+        {
+            over "ST_Pipe_Radiator01B_md" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+    }
+
+    over "ST_Furn_Radiator01_mo_001"
+    {
+        over "ST_Furn_Radiator01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+
+        over "ST_Pipe_Radiator01B_mo_001"
+        {
+            over "ST_Pipe_Radiator01B_md_001" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+    }
+
+    over "ST_Furn_Radiator01_mo_002"
+    {
+        over "ST_Furn_Radiator01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+
+        over "ST_Pipe_Radiator01B_mo_002"
+        {
+            over "ST_Pipe_Radiator01B_md_002" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+    }
+
+    over "ST_Furn_Radiator01_mo_003"
+    {
+        over "ST_Furn_Radiator01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_ScienceDesk02Part1_mo"
+    {
+        over "ST_Furn_ScienceDesk02Part1_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+
+        over "ST_Post_SciClass10_mo_003"
+        {
+            over "ST_Post_SciClass10_md_003" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+
+        over "ST_Post_SciClass04_mo_002"
+        {
+            over "ST_Post_SciClass04_md_002" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+
+        over "ST_Post_SciClass04_mo_001"
+        {
+            over "ST_Post_SciClass04_md_001" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+
+        over "ST_Post_SciClass08_mo"
+        {
+            over "ST_Post_SciClass08_md" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+
+        over "ST_Furn_ScienceDesk02Part2_mo"
+        {
+            over "ST_Furn_ScienceDesk02Part2_md" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+
+        over "ST_Post_SciClass04_mo"
+        {
+            over "ST_Post_SciClass04_md" (
+                prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            )
+            {
+                uniform token physics:approximation = "none"
+            }
+        }
+    }
+
+    over "ST_Furn_ScienceDesk03_mo"
+    {
+        over "ST_Furn_ScienceDesk03_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Stage01_mo"
+    {
+        over "ST_Furn_Stage01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo"
+    {
+        over "ST_Furn_StoolGarage01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_001"
+    {
+        over "ST_Furn_StoolGarage01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_002"
+    {
+        over "ST_Furn_StoolGarage01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_003"
+    {
+        over "ST_Furn_StoolGarage01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_004"
+    {
+        over "ST_Furn_StoolGarage01_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_005"
+    {
+        over "ST_Furn_StoolGarage01_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_006"
+    {
+        over "ST_Furn_StoolGarage01_md_006" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_007"
+    {
+        over "ST_Furn_StoolGarage01_md_007" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_008"
+    {
+        over "ST_Furn_StoolGarage01_md_008" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_009"
+    {
+        over "ST_Furn_StoolGarage01_md_009" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_010"
+    {
+        over "ST_Furn_StoolGarage01_md_010" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_011"
+    {
+        over "ST_Furn_StoolGarage01_md_011" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_012"
+    {
+        over "ST_Furn_StoolGarage01_md_012" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_013"
+    {
+        over "ST_Furn_StoolGarage01_md_013" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_014"
+    {
+        over "ST_Furn_StoolGarage01_md_014" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_StoolGarage01_mo_015"
+    {
+        over "ST_Furn_StoolGarage01_md_015" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_TeacherModernDesk01B_mo"
+    {
+        over "ST_Furn_TeacherModernDesk01B_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo"
+    {
+        over "ST_Furn_Trashcan02_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_001"
+    {
+        over "ST_Furn_Trashcan02_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_002"
+    {
+        over "ST_Furn_Trashcan02_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_003"
+    {
+        over "ST_Furn_Trashcan02_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_004"
+    {
+        over "ST_Furn_Trashcan02_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_005"
+    {
+        over "ST_Furn_Trashcan02_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_006"
+    {
+        over "ST_Furn_Trashcan02_md_006" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_007"
+    {
+        over "ST_Furn_Trashcan02_md_007" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan02_mo_008"
+    {
+        over "ST_Furn_Trashcan02_md_008" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Furn_Trashcan03_mo"
+    {
+        over "ST_Furn_Trashcan03_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Pipe_BathRoom02_mo"
+    {
+        over "ST_Pipe_BathRoom02_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Pipe_Radiator01_mo"
+    {
+        over "ST_Pipe_Radiator01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_001"
+    {
+        over "ST_Walls_ClassRoom01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_002"
+    {
+        over "ST_Walls_ClassRoom01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_003"
+    {
+        over "ST_Walls_ClassRoom01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_004"
+    {
+        over "ST_Walls_ClassRoom01_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_005"
+    {
+        over "ST_Walls_ClassRoom01_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_006"
+    {
+        over "ST_Walls_ClassRoom01_md_006" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom01_mo_007"
+    {
+        over "ST_Walls_ClassRoom01_md_009" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom03B_mo"
+    {
+        over "ST_Walls_ClassRoom03B_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom03B_mo_001"
+    {
+        over "ST_Walls_ClassRoom03B_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom05B_mo"
+    {
+        over "ST_Walls_ClassRoom05B_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom05B_mo_001"
+    {
+        over "ST_Walls_ClassRoom05B_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom07B_mo"
+    {
+        over "ST_Walls_ClassRoom07B_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom07_mo"
+    {
+        over "ST_Walls_ClassRoom07_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom07_mo_001"
+    {
+        over "ST_Walls_ClassRoom07_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom07_mo_002"
+    {
+        over "ST_Walls_ClassRoom07_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoom07_mo_003"
+    {
+        over "ST_Walls_ClassRoom07_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomAngle02_mo"
+    {
+        over "ST_Walls_ClassRoomAngle02_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo"
+    {
+        over "ST_Walls_ClassRoomBeam01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_001"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_002"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_003"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_004"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_005"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomBeam01_mo_006"
+    {
+        over "ST_Walls_ClassRoomBeam01_md_006" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomDoor01_mo"
+    {
+        over "ST_Walls_ClassRoomDoor01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomDoor01_mo_001"
+    {
+        over "ST_Walls_ClassRoomDoor01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo"
+    {
+        over "ST_Walls_ClassRoomWin01_md" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_001"
+    {
+        over "ST_Walls_ClassRoomWin01_md_001" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_002"
+    {
+        over "ST_Walls_ClassRoomWin01_md_002" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_003"
+    {
+        over "ST_Walls_ClassRoomWin01_md_003" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_004"
+    {
+        over "ST_Walls_ClassRoomWin01_md_004" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_005"
+    {
+        over "ST_Walls_ClassRoomWin01_md_005" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+
+    over "ST_Walls_ClassRoomWin01_mo_006"
+    {
+        over "ST_Walls_ClassRoomWin01_md_006" (
+            prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+        )
+        {
+            uniform token physics:approximation = "none"
+        }
+    }
+}
+
+def "ChemLabPhysics"
+{
+    def Cube "FloorCollider" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (14.8, 19.920006, 0.1)
+        double3 xformOp:translate = (-6.6884778981752735, 2.336671187052423, -2.8314999999999997)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+}
+
+over "moebius_mecanum_base"
+{
+    over "left_front_wheel_link"
+    {
+        def Sphere "wheel_contact" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token purpose = "guide"
+            double radius = 0.05
+        }
+    }
+
+    over "left_rear_wheel_link"
+    {
+        def Sphere "wheel_contact" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token purpose = "guide"
+            double radius = 0.05
+        }
+    }
+
+    over "right_front_wheel_link"
+    {
+        def Sphere "wheel_contact" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token purpose = "guide"
+            double radius = 0.05
+        }
+    }
+
+    over "right_rear_wheel_link"
+    {
+        def Sphere "wheel_contact" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token purpose = "guide"
+            double radius = 0.05
+        }
+    }
+}
+
+def Xform "Beaker" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    prepend references = @./chem_lab/lab.usd@</root/Lab/ST_Acc_BechersGlass03_mo>
+)
+{
+    float physics:mass = 0.05
+    float3 xformOp:rotateXYZ = (-90, 0, 8.78)
+    double3 xformOp:translate = (-6.3623786773405735, 4.10377408831297, -2.7464)
+
+    over "ST_Acc_BechersGlass03_md" (
+        prepend apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "MaterialBindingAPI"]
+    )
+    {
+        rel material:binding = </ChemLab/materials/ST_Acc_ScienceGlass01>
+        rel material:binding:physics = </PhysicsMaterials/BeakerGrip> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        uniform token physics:approximation = "convexHull"
+    }
+}
+
+def "PhysicsMaterials"
+{
+    def Material "BeakerGrip" (
+        prepend apiSchemas = ["PhysicsMaterialAPI"]
+    )
+    {
+        float physics:dynamicFriction = 0.9
+        float physics:restitution = 0
+        float physics:staticFriction = 1
+    }
+}
+

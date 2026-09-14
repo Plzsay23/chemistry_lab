@@ -1,0 +1,8 @@
+# not Isaac: presentation docs, 3D-print parts, duplicate archive
+docs/
+stls/
+chem_lab.zip
+
+__pycache__/
+*.pyc
+*.log
